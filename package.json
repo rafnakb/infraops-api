@@ -1,0 +1,29 @@
+{
+  "name": "infraops-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc --noEmit",
+    "build:lambda": "npm run build && npm run zip",
+    "zip": "mkdir -p dist && cp package.json dist/ && cp -R node_modules dist/ && cd dist && zip -r lambda.zip .",
+    "start": "node dist/lambda.js",
+    "start:local": "ts-node src/server.ts",
+    "dev": "npm run dev",
+    "test": "echo 'ok'",
+    "lint": "eslint ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0",
+    "serverless-http": "^3.2.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.0.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}

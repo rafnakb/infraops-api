@@ -1,0 +1,31 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: infraops-api
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/app
+      - /usr/app/node_modules
+    environment:
+      - NODE_ENV=development
+    command: npm run start:local
+
+  lambda-builder:
+    build:
+      context: .
+      dockerfile: Dockerfile.lambda
+    volumes:
+      - ./dist:/usr/app/dist
+    command: ["sh", "-c", "npm run build:lambda && cp dist/lambda.zip /usr/app/dist/"]
+
+  terraform:
+    image: hashicorp/terraform:1.8.0
+    working_dir: /workspace
+    volumes:
+      - ./infra:/workspace
+      - ./dist:/workspace/dist
+      - ./.aws:/root/.aws
+    entrypoint: [""]
